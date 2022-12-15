@@ -21,9 +21,11 @@ enum TokenType {
 struct Token {
     std::string data;
     TokenType type = TokenType::Invalid;
+    std::size_t line;
 
-    Token(std::string data) {
+    Token(std::string data, std::size_t line) {
         this->data = data;
+        this->line = line;
     };
 
     Token(std::string data, TokenType type) {
@@ -33,11 +35,11 @@ struct Token {
 };
 
 namespace Lexer {
-    // one of these is not like the other
     const std::unordered_set<std::string> keywords = 
-        {"string", "int", "float", "bool", "fn", "->"};
+        {"string", "int", "float", "bool", "fn",};
     const std::unordered_set<std::string> operators = 
-        {"=", "+"};
+        {"=", "+", "-", "*", "/", "^", ">", "<",
+        ">=", "<=", "!=", "=="};
     const std::unordered_set<char> specialSymbols = 
         {'(', ')', '{', '}', ';', '!', '.', '$',
          ',', ':', };

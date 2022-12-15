@@ -21,14 +21,15 @@ bool Lexer::ReadFile(const std::string &filePath, std::string &fileData) {
 }
 
 // helper functions
-void tokenBufferPushBack(std::string &buffer, std::vector<Token> &tokens, bool strip=true) {
+void tokenBufferPushBack(std::string &buffer, std::vector<Token> &tokens, 
+    std::size_t line, bool strip=true) {
     if(strip) {
         buffer = StringUtils::Strip(buffer);
     }
     if(buffer.empty()) {
         return;
     }
-    tokens.push_back(Token(buffer));
+    tokens.push_back(Token(buffer, line));
     buffer.clear();
 }
 bool isNumber(const std::string &str) {
@@ -61,6 +62,7 @@ void Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
     bool comment = false, string = false, stringFormat = false, number = false;
     std::string charBuffer;
     // iterate char at a time and split tokens
+    std::size_t line = 1;
     for(int i = 0; i < fileData.size(); i++) {
         char currChar = fileData[i];
         char nextChar = (i+1) == fileData.size() ? '\0' : fileData[i+1];
@@ -73,7 +75,7 @@ void Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
             if(currChar == '$' && nextChar == '{' && prevChar != '\\') {
                 stringFormat = true;
                 string = false;
-                tokenBufferPushBack(charBuffer, tokens, false);
+                tokenBufferPushBack(charBuffer, tokens, line, false);
             }
         }
         else if(!string && (currChar == '/' && nextChar == '/')) {
@@ -81,6 +83,7 @@ void Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
         }
         else if(currChar == '\n') {
             comment = false;
+            line++;
             continue;
         }
         else if(isdigit(currChar) || isdigit(nextChar)) { 
@@ -90,7 +93,7 @@ void Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
             || isOperator(std::string(currChar, 1))
             || isSpecSymb(currChar))) {
             number = false;
-            tokenBufferPushBack(charBuffer, tokens);
+            tokenBufferPushBack(charBuffer, tokens, line);
         }
         
         // append char to buffer if not in comment
@@ -104,7 +107,7 @@ void Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
             || isspace(nextChar))) {
             // certified bruh moment
             // we dont strip if last part of string segment
-            tokenBufferPushBack(charBuffer, tokens, 
+            tokenBufferPushBack(charBuffer, tokens, line, 
                 !(charBuffer[charBuffer.size()-1] == '\"' 
                 && charBuffer[0] != '\"'));
             if(stringFormat && currChar == '}') {

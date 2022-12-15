@@ -20,6 +20,7 @@ int main(int argc, char** argv) {
 
     // printout tokens
     for(int i = 0; i < tokens.size(); i++) {
+        std::cout << "[" << tokens[i].line << "] ";
         if(tokens[i].type != TokenType::Invalid) {
             std::cout << "\u001b[32m" << tokens[i].data << "\u001b[37m, " << tokens[i].type << std::endl;
         }
