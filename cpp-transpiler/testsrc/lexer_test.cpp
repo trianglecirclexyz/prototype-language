@@ -196,3 +196,68 @@ TEST(LexerTest, OperatorTokens) {
     }
 
 }
+
+TEST(LexerTest, Numbers) {
+
+    std::vector<Token> expectedTokens;
+
+    {
+        std::string fileData = 
+            "(100+0.432)\n"
+            "1+1+2*5/2.12\n"
+            "\"${10 != 2}\"\n";
+
+        expectedTokens = {
+            Token("(", TokenType::SpecialSymbol),
+            Token("100", TokenType::Value),
+            Token("+", TokenType::OperatorToken),
+            Token("0.432", TokenType::Value),
+            Token(")", TokenType::SpecialSymbol),
+
+            Token("1", TokenType::Value),
+            Token("+", TokenType::OperatorToken),
+            Token("1", TokenType::Value),
+            Token("+", TokenType::OperatorToken),
+            Token("2", TokenType::Value),
+            Token("*", TokenType::OperatorToken),
+            Token("5", TokenType::Value),
+            Token("/", TokenType::OperatorToken),
+            Token("2.12", TokenType::Value),
+
+            Token("\"", TokenType::StringSegment),
+            Token("$", TokenType::SpecialSymbol),
+            Token("{", TokenType::SpecialSymbol),
+            Token("10", TokenType::Value),
+            Token("!", TokenType::SpecialSymbol),
+            Token("=", TokenType::OperatorToken),
+            Token("2", TokenType::Value),
+            Token("}", TokenType::SpecialSymbol),
+            Token("\"", TokenType::StringSegment),
+        };
+        
+        std::vector<Token> tokens;
+        Lexer::Lex(fileData, tokens);
+
+            // printout tokens
+    for(int i = 0; i < tokens.size(); i++) {
+        std::cout << "Index: " << i << ", ";
+        std::cout << "[" << tokens[i].line << "] ";
+        if(tokens[i].type != TokenType::Invalid) {
+            std::cout << "\u001b[32m" << tokens[i].data << "\u001b[37m, " << tokens[i].type << std::endl;
+        }
+        else {
+            std::cout << "\u001b[31m" << tokens[i].data << "\u001b[37m, " << tokens[i].type << std::endl;
+        }
+    }
+        
+        ASSERT_EQ(tokens.size(), expectedTokens.size());
+
+        for(int i = 0; i < tokens.size(); i++) {
+            EXPECT_EQ(tokens[i].data, expectedTokens[i].data) << 
+                " \u001b[1m\u001b[31mFailure at index " << i << "\u001b[0m" << std::endl;
+            EXPECT_EQ(tokens[i].type, expectedTokens[i].type) << 
+                " \u001b[1m\u001b[31mFailure at index " << i << "\u001b[0m" << std::endl;
+        }
+    }
+
+}

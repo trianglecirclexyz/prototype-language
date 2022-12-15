@@ -88,7 +88,7 @@ void Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
             tokenBufferPushBack(charBuffer, tokens, line);
             continue;
         }
-        else if(isdigit(currChar) || isdigit(nextChar)) { 
+        else if(isdigit(currChar) || (currChar == '.' && isdigit(nextChar))) { 
             number = true;
         }
         else if(number && (isspace(currChar) 
@@ -148,7 +148,8 @@ void Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
         }
         else {
 
-            if(tk.data[0] == '\"' && tk.data[tk.data.size() - 1] == '\"') {
+            if(tk.data.size() > 1 && tk.data[0] == '\"' && 
+               tk.data[tk.data.size() - 1] == '\"') {
                 tk.type = TokenType::String;
             }
             else if(tk.data[0] == '\"' || tk.data[tk.data.size() - 1] == '\"') {
