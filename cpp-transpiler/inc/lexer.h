@@ -33,8 +33,9 @@ struct Token {
 };
 
 namespace Lexer {
+    // one of these is not like the other
     const std::unordered_set<std::string> keywords = 
-        {"string", "int", "float", "bool", "fn"};
+        {"string", "int", "float", "bool", "fn", "->"};
     const std::unordered_set<std::string> operators = 
         {"=", "+"};
     const std::unordered_set<char> specialSymbols = 
