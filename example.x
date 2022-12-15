@@ -2,7 +2,7 @@
 // int, float, bool, string
 
 // float function
-fn func(bool i, int j): float {
+fn func(bool i, int j) -> float {
     return i / j;
 }
 
