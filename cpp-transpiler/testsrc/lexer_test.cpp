@@ -56,6 +56,35 @@ TEST(LexerTest, Simple) {
         }
     }
 
+        {
+        std::string fileData = 
+            "float x;\n"
+            "float y = 0.2;";
+
+        expectedTokens = {
+            Token("float", TokenType::Keyword), 
+            Token("x", TokenType::Identifier), 
+            Token(";", TokenType::SpecialSymbol), 
+            Token("float", TokenType::Keyword),
+            Token("y", TokenType::Identifier),
+            Token("=", TokenType::Operator),
+            Token("0.2", TokenType::Value),
+            Token(";", TokenType::SpecialSymbol),
+        };
+        
+        std::vector<Token> tokens;
+        Lexer::Lex(fileData, tokens);
+        
+        EXPECT_EQ(tokens.size(), expectedTokens.size());
+
+        for(int i = 0; i < tokens.size(); i++) {
+            EXPECT_EQ(tokens[i].data, expectedTokens[i].data) << 
+                "\u001b[1m\u001b[31mFailure at index " << i << "\u001b[0m" << std::endl;
+            EXPECT_EQ(tokens[i].type, expectedTokens[i].type) << 
+                " \u001b[1m\u001b[31mFailure at index " << i << "\u001b[0m" << std::endl;
+        }
+    }
+
 }
 
 TEST(LexerTest, FormattedString) {
