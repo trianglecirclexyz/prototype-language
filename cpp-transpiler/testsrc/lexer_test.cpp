@@ -139,6 +139,58 @@ TEST(LexerTest, FormattedString) {
         }
     }
 
+    {
+        std::string fileData = 
+            "stdout!(\"My name is ${john.name} and i am ${john.age} years old!\"); ";
+
+        expectedTokens = {
+            Token("stdout", TokenType::Identifier), 
+            Token("!", TokenType::SpecialSymbol), 
+            Token("(", TokenType::SpecialSymbol), 
+            Token("\"My name is ", TokenType::StringSegment),
+            Token("$", TokenType::SpecialSymbol),
+            Token("{", TokenType::SpecialSymbol),
+            Token("john", TokenType::Identifier),
+            Token(".", TokenType::SpecialSymbol),
+            Token("name", TokenType::Identifier),
+            Token("}", TokenType::SpecialSymbol),
+            Token(" and i am ", TokenType::StringSegment),
+            Token("$", TokenType::SpecialSymbol),
+            Token("{", TokenType::SpecialSymbol),
+            Token("john", TokenType::Identifier),
+            Token(".", TokenType::SpecialSymbol),
+            Token("age", TokenType::Identifier),
+            Token("}", TokenType::SpecialSymbol),
+            Token(" years old!\"", TokenType::StringSegment),
+            Token(")", TokenType::SpecialSymbol),
+            Token(";", TokenType::SpecialSymbol),
+        };
+        
+        std::vector<Token> tokens;
+        Lexer::Lex(fileData, tokens);
+
+        // printout tokens
+        for(int i = 0; i < tokens.size(); i++) {
+            std::cout << "Index: " << i << ", ";
+            std::cout << "[" << tokens[i].line << "]_";
+            if(tokens[i].type != TokenType::Invalid) {
+                std::cout << "\u001b[32m" << tokens[i].data << "\u001b[37m, " << tokens[i].type << std::endl;
+            }
+            else {
+                std::cout << "\u001b[31m" << tokens[i].data << "\u001b[37m, " << tokens[i].type << std::endl;
+            }
+        }
+        
+        ASSERT_EQ(tokens.size(), expectedTokens.size());
+
+        for(int i = 0; i < tokens.size(); i++) {
+            EXPECT_EQ(tokens[i].data, expectedTokens[i].data) << 
+                " \u001b[1m\u001b[31mFailure at index " << i << "\u001b[0m" << std::endl;
+            EXPECT_EQ(tokens[i].type, expectedTokens[i].type) << 
+                " \u001b[1m\u001b[31mFailure at index " << i << "\u001b[0m" << std::endl;
+        }
+    }
+
 }
 
 TEST(LexerTest, OperatorTokens) {
@@ -238,17 +290,17 @@ TEST(LexerTest, Numbers) {
         std::vector<Token> tokens;
         Lexer::Lex(fileData, tokens);
 
-            // printout tokens
-    for(int i = 0; i < tokens.size(); i++) {
-        std::cout << "Index: " << i << ", ";
-        std::cout << "[" << tokens[i].line << "] ";
-        if(tokens[i].type != TokenType::Invalid) {
-            std::cout << "\u001b[32m" << tokens[i].data << "\u001b[37m, " << tokens[i].type << std::endl;
+        // printout tokens
+        for(int i = 0; i < tokens.size(); i++) {
+            std::cout << "Index: " << i << ", ";
+            std::cout << "[" << tokens[i].line << "] ";
+            if(tokens[i].type != TokenType::Invalid) {
+                std::cout << "\u001b[32m" << tokens[i].data << "\u001b[37m, " << tokens[i].type << std::endl;
+            }
+            else {
+                std::cout << "\u001b[31m" << tokens[i].data << "\u001b[37m, " << tokens[i].type << std::endl;
+            }
         }
-        else {
-            std::cout << "\u001b[31m" << tokens[i].data << "\u001b[37m, " << tokens[i].type << std::endl;
-        }
-    }
         
         ASSERT_EQ(tokens.size(), expectedTokens.size());
 
