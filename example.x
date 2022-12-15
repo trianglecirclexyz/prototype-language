@@ -2,7 +2,7 @@
 // int, float, bool, string
 
 // float function
-fn func(bool i, int j) -> float {
+fn func(bool i, int j): float {
     return i / j;
 }
 
@@ -38,4 +38,5 @@ struct struct_example {
 struct_example john(name = "John", age = 73);
 
 // access struct members
-stdout!("My name is ${john.name} and i am ${john.age} years old!"); // "My name is John and i am 73 years old!" 
+stdout!("My name is ${john.name} and i am ${john.age} years old!"); 
+    // "My name is John and i am 73 years old!" 
