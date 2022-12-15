@@ -17,9 +17,16 @@ int main(int argc, char** argv) {
 
     std::vector<Token> tokens;
     Lexer::Lex(fileData, tokens);
-    for(int i = 0; i < tokens.size(); i++) {
-        std::cout << "\u001b[32m" << tokens[i].data << "\u001b[37m, " << tokens[i].type << std::endl;
-    }
+
+    // // printout tokens
+    // for(int i = 0; i < tokens.size(); i++) {
+    //     if(tokens[i].type != TokenType::Invalid) {
+    //         std::cout << "\u001b[32m" << tokens[i].data << "\u001b[37m, " << tokens[i].type << std::endl;
+    //     }
+    //     else {
+    //         std::cout << "\u001b[31m" << tokens[i].data << "\u001b[37m, " << tokens[i].type << std::endl;
+    //     }
+    // }
 
     return EXIT_SUCCESS;
 
