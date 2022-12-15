@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "string_utils.h"
 
-TEST(StringUtilsTest, SliceTest) {
+TEST(StringUtilsTest, Slice) {
     EXPECT_EQ(StringUtils::Slice("hello", 0), "hello");
     EXPECT_EQ(StringUtils::Slice("hello", 0, 0), "hello");
     EXPECT_EQ(StringUtils::Slice("hello", 0, 10), "hello");

@@ -20,7 +20,7 @@ bool Lexer::ReadFile(const std::string &filePath, std::string &fileData) {
     return true;
 }
 
-// helper function
+// helper functions
 void tokenBufferPushBack(std::string &buffer, std::vector<Token> &tokens) {
     buffer = StringUtils::Strip(buffer);
     if(buffer.empty()) {
@@ -28,6 +28,22 @@ void tokenBufferPushBack(std::string &buffer, std::vector<Token> &tokens) {
     }
     tokens.push_back(Token(buffer));
     buffer.clear();
+}
+
+bool isNumber(const std::string &str) {
+    int numDecimal = 0;
+    for(int i = 0; i < str.size(); i++) {
+        if(!isdigit(str[i]) && str[i] != '.') {
+            return false;
+        }
+        else if(str[i] == '.') {
+            numDecimal++;
+        }
+        else if(numDecimal > 1) {
+            return false;
+        }
+    }
+    return true;
 }
 
 bool Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
@@ -38,6 +54,7 @@ bool Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
     for(int i = 0; i < fileData.size(); i++) {
         char currChar = fileData[i];
         char nextChar = (i+1) == fileData.size() ? '\0' : fileData[i+1];
+        char prevChar = (i-1) < 0 ? '\0' : fileData[i-1];
 
         if(!comment && currChar == '\"') {
             string = !string;
@@ -56,15 +73,17 @@ bool Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
             comment = false;
             continue;
         }
-        else if(isdigit(currChar) || isdigit(nextChar)) {
-            std::cout << "curr, next: " << currChar << ", " << nextChar << std::endl; 
+        else if(isdigit(currChar) || isdigit(nextChar)) { 
             number = true;
         }
-        else if(number && !isdigit(nextChar)) {
+        else if(number && (isspace(currChar) 
+                || Lexer::operators.count(std::string(currChar, 1))
+                || Lexer::specialSymbols.count(currChar))) {
             number = false;
+            tokenBufferPushBack(charBuffer, tokens);
         }
         
-        // append char to buffer
+        // append char to buffer if not in comment
         if(!comment) {
             charBuffer += currChar;
         }
@@ -95,20 +114,20 @@ bool Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
             tk.type = TokenType::SpecialSymbol;
         }
         // check if constant value (int, float, bool)
-        else if(false) {
+        else if(isNumber(tk.data)) {
             tk.type = TokenType::Value;
         }
         else {
 
-            // if() {
-
-            // }
-            // else if() {
-
-            // }
-            // else {
-            //     tk.type = TokenType::Identifier;
-            // }
+            if(tk.data[0] == '\"' && tk.data[tk.data.size() - 1] == '\"') {
+                tk.type = TokenType::String;
+            }
+            else if(tk.data[0] == '\"' || tk.data[tk.data.size() - 1] == '\"') {
+                tk.type = TokenType::StringSegment;
+            }
+            else if(!isdigit(tk.data[0])){
+                tk.type = TokenType::Identifier;
+            }
 
         }
     }

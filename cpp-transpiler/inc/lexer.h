@@ -8,32 +8,37 @@
 
 
 enum TokenType {
-    Keyword,
-    Identifier,
-    SpecialSymbol,
-    Operator,
-    Value,
-    String,
-    StringSegment,
-    Unassigned,
+    Keyword, // 0
+    Identifier, // 1
+    SpecialSymbol, // 2
+    Operator, // 3
+    Value, // 4
+    String, // 5
+    StringSegment, // 6
+    Invalid, // 7
 };
 
 struct Token {
     std::string data;
-    TokenType type = TokenType::Unassigned;
+    TokenType type = TokenType::Invalid;
 
     Token(std::string data) {
         this->data = data;
+    };
+
+    Token(std::string data, TokenType type) {
+        this->data = data;
+        this->type = type;
     };
 };
 
 namespace Lexer {
     const std::unordered_set<std::string> keywords = 
-        {"fn"};
+        {"string", "int", "float", "bool", "fn"};
     const std::unordered_set<std::string> operators = 
-        {""};
+        {"=", "+"};
     const std::unordered_set<char> specialSymbols = 
-        {'(', ')', '{', '}', ';', '!', '.', '$'};
+        {'(', ')', '{', '}', ';', '!', '.', '$',};
 
     // read file into fileData
     bool ReadFile(const std::string &filePath, std::string &fileData);
