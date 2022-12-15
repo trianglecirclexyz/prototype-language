@@ -11,7 +11,7 @@ enum TokenType {
     Keyword, // 0
     Identifier, // 1
     SpecialSymbol, // 2
-    Operator, // 3
+    OperatorToken, // 3
     Value, // 4
     String, // 5
     StringSegment, // 6
@@ -37,9 +37,8 @@ struct Token {
 namespace Lexer {
     const std::unordered_set<std::string> keywords = 
         {"string", "int", "float", "bool", "fn",};
-    const std::unordered_set<std::string> operators = 
-        {"=", "+", "-", "*", "/", "^", ">", "<",
-        ">=", "<=", "!=", "=="};
+    const std::unordered_set<char> operatorTokens = 
+        {'=', '+', '-', '*', '/', '^', '>', '<',};
     const std::unordered_set<char> specialSymbols = 
         {'(', ')', '{', '}', ';', '!', '.', '$',
          ',', ':', };

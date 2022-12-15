@@ -38,7 +38,7 @@ TEST(LexerTest, Simple) {
         expectedTokens = {
             Token("int", TokenType::Keyword), 
             Token("_12number", TokenType::Identifier), 
-            Token("=", TokenType::Operator), 
+            Token("=", TokenType::OperatorToken), 
             Token("12", TokenType::Value),
             Token(";", TokenType::SpecialSymbol),
         };
@@ -56,7 +56,7 @@ TEST(LexerTest, Simple) {
         }
     }
 
-        {
+    {
         std::string fileData = 
             "float x;\n"
             "float y = 0.2;";
@@ -67,7 +67,7 @@ TEST(LexerTest, Simple) {
             Token(";", TokenType::SpecialSymbol), 
             Token("float", TokenType::Keyword),
             Token("y", TokenType::Identifier),
-            Token("=", TokenType::Operator),
+            Token("=", TokenType::OperatorToken),
             Token("0.2", TokenType::Value),
             Token(";", TokenType::SpecialSymbol),
         };
@@ -128,6 +128,62 @@ TEST(LexerTest, FormattedString) {
         
         std::vector<Token> tokens;
         Lexer::Lex(fileData, tokens);
+        
+        ASSERT_EQ(tokens.size(), expectedTokens.size());
+
+        for(int i = 0; i < tokens.size(); i++) {
+            EXPECT_EQ(tokens[i].data, expectedTokens[i].data) << 
+                " \u001b[1m\u001b[31mFailure at index " << i << "\u001b[0m" << std::endl;
+            EXPECT_EQ(tokens[i].type, expectedTokens[i].type) << 
+                " \u001b[1m\u001b[31mFailure at index " << i << "\u001b[0m" << std::endl;
+        }
+    }
+
+}
+
+TEST(LexerTest, OperatorTokens) {
+
+    std::vector<Token> expectedTokens;
+
+    {
+        std::string fileData = 
+            "1 + 1 == 2\n"
+            "+-=*^/\n"
+            "===";
+
+        expectedTokens = {
+            Token("1", TokenType::Value),
+            Token("+", TokenType::OperatorToken),
+            Token("1", TokenType::Value),
+            Token("=", TokenType::OperatorToken),
+            Token("=", TokenType::OperatorToken),
+            Token("2", TokenType::Value),
+
+            Token("+", TokenType::OperatorToken),
+            Token("-", TokenType::OperatorToken),
+            Token("=", TokenType::OperatorToken),
+            Token("*", TokenType::OperatorToken),
+            Token("^", TokenType::OperatorToken),
+            Token("/", TokenType::OperatorToken),
+
+            Token("=", TokenType::OperatorToken),
+            Token("=", TokenType::OperatorToken),
+            Token("=", TokenType::OperatorToken),
+        };
+        
+        std::vector<Token> tokens;
+        Lexer::Lex(fileData, tokens);
+
+            // printout tokens
+    for(int i = 0; i < tokens.size(); i++) {
+        std::cout << "[" << tokens[i].line << "] ";
+        if(tokens[i].type != TokenType::Invalid) {
+            std::cout << "\u001b[32m" << tokens[i].data << "\u001b[37m, " << tokens[i].type << std::endl;
+        }
+        else {
+            std::cout << "\u001b[31m" << tokens[i].data << "\u001b[37m, " << tokens[i].type << std::endl;
+        }
+    }
         
         ASSERT_EQ(tokens.size(), expectedTokens.size());
 
