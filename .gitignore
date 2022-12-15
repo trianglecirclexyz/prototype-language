@@ -31,5 +31,5 @@
 *.out
 *.app
 
-/bin
-/obj
+cpp-transpiler/bin
+cpp-transpiler/obj
