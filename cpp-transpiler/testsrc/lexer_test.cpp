@@ -58,7 +58,7 @@ TEST(LexerTest, Simple) {
 
 }
 
-TEST(LexerTest, FormatString) {
+TEST(LexerTest, FormattedString) {
     
     std::vector<Token> expectedTokens;
 
