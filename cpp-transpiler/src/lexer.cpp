@@ -147,9 +147,10 @@ void Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
             tk.type = TokenType::Value;
         }
         else {
-
-            if(tk.data.size() > 1 && tk.data[0] == '\"' && 
-               tk.data[tk.data.size() - 1] == '\"') {
+            std::string tmpStrip = StringUtils::Strip(tk.data);
+            if(tk.data.size() > 1 && tmpStrip[0] == '\"' && 
+               tmpStrip[tmpStrip.size() - 1] == '\"') {
+                tk.data = tmpStrip;
                 tk.type = TokenType::String;
             }
             else if(tk.data[0] == '\"' || tk.data[tk.data.size() - 1] == '\"') {
