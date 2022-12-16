@@ -35,8 +35,16 @@ struct struct_example {
     int age; 
 }
 
-struct_example john(name = "John", age = 73);
+struct_example john(name = "John", age = 24);
+struct_example nancy(name = "Nancy", age = 18);
+struct_example rose(name = "Rose", age = 19);
+
+list<struct_example> people = {john}; // {john}
+people.append(nancy); // {john, nancy}
+people.prepend(rose); // {rose, john, nancy}
 
 // access struct members
 stdout!("My name is ${john.name} and i am ${john.age} years old!"); 
-    // "My name is John and i am 73 years old!" 
+    // "My name is John and i am 24 years old!"
+
+for struct_example in  
