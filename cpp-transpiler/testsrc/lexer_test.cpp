@@ -11,11 +11,11 @@ TEST(LexerTest, Simple) {
 
         expectedTokens = {
             Token("stdout", TokenType::Identifier), 
-            Token("!", TokenType::SpecialSymbol), 
-            Token("(", TokenType::SpecialSymbol), 
+            Token("!", TokenType::Symbol), 
+            Token("(", TokenType::Symbol), 
             Token("\"Hello world!\"", TokenType::String),
-            Token(")", TokenType::SpecialSymbol),
-            Token(";", TokenType::SpecialSymbol),
+            Token(")", TokenType::Symbol),
+            Token(";", TokenType::Symbol),
         };
         
         std::vector<Token> tokens;
@@ -50,9 +50,9 @@ TEST(LexerTest, Simple) {
         expectedTokens = {
             Token("int", TokenType::Keyword), 
             Token("_12number", TokenType::Identifier), 
-            Token("=", TokenType::OperatorToken), 
+            Token("=", TokenType::Symbol), 
             Token("12", TokenType::Value),
-            Token(";", TokenType::SpecialSymbol),
+            Token(";", TokenType::Symbol),
         };
         
         std::vector<Token> tokens;
@@ -88,12 +88,12 @@ TEST(LexerTest, Simple) {
         expectedTokens = {
             Token("float", TokenType::Keyword), 
             Token("x", TokenType::Identifier), 
-            Token(";", TokenType::SpecialSymbol), 
+            Token(";", TokenType::Symbol), 
             Token("float", TokenType::Keyword),
             Token("y", TokenType::Identifier),
-            Token("=", TokenType::OperatorToken),
+            Token("=", TokenType::Symbol),
             Token("0.2", TokenType::Value),
-            Token(";", TokenType::SpecialSymbol),
+            Token(";", TokenType::Symbol),
         };
         
         std::vector<Token> tokens;
@@ -134,32 +134,32 @@ TEST(LexerTest, FormattedString) {
 
         expectedTokens = {
             Token("stdout", TokenType::Identifier), 
-            Token("!", TokenType::SpecialSymbol), 
-            Token("(", TokenType::SpecialSymbol), 
+            Token("!", TokenType::Symbol), 
+            Token("(", TokenType::Symbol), 
             Token("\"Hello ", TokenType::StringSegment),
-            Token("$", TokenType::SpecialSymbol),
-            Token("{", TokenType::SpecialSymbol),
+            Token("$", TokenType::Symbol),
+            Token("{", TokenType::Symbol),
             Token("p1", TokenType::Identifier),
-            Token(".", TokenType::SpecialSymbol),
+            Token(".", TokenType::Symbol),
             Token("name", TokenType::Identifier),
-            Token("}", TokenType::SpecialSymbol),
+            Token("}", TokenType::Symbol),
             Token(", how is ", TokenType::StringSegment),
-            Token("$", TokenType::SpecialSymbol),
-            Token("{", TokenType::SpecialSymbol),
+            Token("$", TokenType::Symbol),
+            Token("{", TokenType::Symbol),
             Token("p2", TokenType::Identifier),
-            Token(".", TokenType::SpecialSymbol),
+            Token(".", TokenType::Symbol),
             Token("name", TokenType::Identifier),
-            Token("}", TokenType::SpecialSymbol),
+            Token("}", TokenType::Symbol),
             Token(" doing?\"", TokenType::StringSegment),
-            Token(")", TokenType::SpecialSymbol),
-            Token(";", TokenType::SpecialSymbol),
+            Token(")", TokenType::Symbol),
+            Token(";", TokenType::Symbol),
 
             Token("stdout", TokenType::Identifier), 
-            Token("!", TokenType::SpecialSymbol), 
-            Token("(", TokenType::SpecialSymbol),
+            Token("!", TokenType::Symbol), 
+            Token("(", TokenType::Symbol),
             Token("\"\\${escaped}\"", TokenType::String),
-            Token(")", TokenType::SpecialSymbol),
-            Token(";", TokenType::SpecialSymbol),
+            Token(")", TokenType::Symbol),
+            Token(";", TokenType::Symbol),
         };
         
         std::vector<Token> tokens;
@@ -193,25 +193,25 @@ TEST(LexerTest, FormattedString) {
 
         expectedTokens = {
             Token("stdout", TokenType::Identifier), 
-            Token("!", TokenType::SpecialSymbol), 
-            Token("(", TokenType::SpecialSymbol), 
+            Token("!", TokenType::Symbol), 
+            Token("(", TokenType::Symbol), 
             Token("\"My name is ", TokenType::StringSegment),
-            Token("$", TokenType::SpecialSymbol),
-            Token("{", TokenType::SpecialSymbol),
+            Token("$", TokenType::Symbol),
+            Token("{", TokenType::Symbol),
             Token("john", TokenType::Identifier),
-            Token(".", TokenType::SpecialSymbol),
+            Token(".", TokenType::Symbol),
             Token("name", TokenType::Identifier),
-            Token("}", TokenType::SpecialSymbol),
+            Token("}", TokenType::Symbol),
             Token(" and i am ", TokenType::StringSegment),
-            Token("$", TokenType::SpecialSymbol),
-            Token("{", TokenType::SpecialSymbol),
+            Token("$", TokenType::Symbol),
+            Token("{", TokenType::Symbol),
             Token("john", TokenType::Identifier),
-            Token(".", TokenType::SpecialSymbol),
+            Token(".", TokenType::Symbol),
             Token("age", TokenType::Identifier),
-            Token("}", TokenType::SpecialSymbol),
+            Token("}", TokenType::Symbol),
             Token(" years old!\"", TokenType::StringSegment),
-            Token(")", TokenType::SpecialSymbol),
-            Token(";", TokenType::SpecialSymbol),
+            Token(")", TokenType::Symbol),
+            Token(";", TokenType::Symbol),
         };
         
         std::vector<Token> tokens;
@@ -253,22 +253,22 @@ TEST(LexerTest, OperatorTokens) {
 
         expectedTokens = {
             Token("1", TokenType::Value),
-            Token("+", TokenType::OperatorToken),
+            Token("+", TokenType::Symbol),
             Token("1", TokenType::Value),
-            Token("=", TokenType::OperatorToken),
-            Token("=", TokenType::OperatorToken),
+            Token("=", TokenType::Symbol),
+            Token("=", TokenType::Symbol),
             Token("2", TokenType::Value),
 
-            Token("+", TokenType::OperatorToken),
-            Token("-", TokenType::OperatorToken),
-            Token("=", TokenType::OperatorToken),
-            Token("*", TokenType::OperatorToken),
-            Token("^", TokenType::OperatorToken),
-            Token("/", TokenType::OperatorToken),
+            Token("+", TokenType::Symbol),
+            Token("-", TokenType::Symbol),
+            Token("=", TokenType::Symbol),
+            Token("*", TokenType::Symbol),
+            Token("^", TokenType::Symbol),
+            Token("/", TokenType::Symbol),
 
-            Token("=", TokenType::OperatorToken),
-            Token("=", TokenType::OperatorToken),
-            Token("=", TokenType::OperatorToken),
+            Token("=", TokenType::Symbol),
+            Token("=", TokenType::Symbol),
+            Token("=", TokenType::Symbol),
         };
         
         std::vector<Token> tokens;
@@ -309,30 +309,30 @@ TEST(LexerTest, Numbers) {
             "\"${10 != 2}\"\n";
 
         expectedTokens = {
-            Token("(", TokenType::SpecialSymbol),
+            Token("(", TokenType::Symbol),
             Token("100", TokenType::Value),
-            Token("+", TokenType::OperatorToken),
+            Token("+", TokenType::Symbol),
             Token("0.432", TokenType::Value),
-            Token(")", TokenType::SpecialSymbol),
+            Token(")", TokenType::Symbol),
 
             Token("1", TokenType::Value),
-            Token("+", TokenType::OperatorToken),
+            Token("+", TokenType::Symbol),
             Token("1", TokenType::Value),
-            Token("+", TokenType::OperatorToken),
+            Token("+", TokenType::Symbol),
             Token("2", TokenType::Value),
-            Token("*", TokenType::OperatorToken),
+            Token("*", TokenType::Symbol),
             Token("5", TokenType::Value),
-            Token("/", TokenType::OperatorToken),
+            Token("/", TokenType::Symbol),
             Token("2.12", TokenType::Value),
 
             Token("\"", TokenType::StringSegment),
-            Token("$", TokenType::SpecialSymbol),
-            Token("{", TokenType::SpecialSymbol),
+            Token("$", TokenType::Symbol),
+            Token("{", TokenType::Symbol),
             Token("10", TokenType::Value),
-            Token("!", TokenType::SpecialSymbol),
-            Token("=", TokenType::OperatorToken),
+            Token("!", TokenType::Symbol),
+            Token("=", TokenType::Symbol),
             Token("2", TokenType::Value),
-            Token("}", TokenType::SpecialSymbol),
+            Token("}", TokenType::Symbol),
             Token("\"", TokenType::StringSegment),
         };
         
