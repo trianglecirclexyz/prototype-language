@@ -20,6 +20,7 @@ bool Lexer::ReadFile(const std::string &filePath, std::string &fileData) {
     return true;
 }
 
+
 // helper functions
 void tokenBufferPushBack(std::string &buffer, std::vector<Token> &tokens, 
     std::size_t line, bool strip=true) {
@@ -32,6 +33,7 @@ void tokenBufferPushBack(std::string &buffer, std::vector<Token> &tokens,
     tokens.push_back(Token(buffer, line));
     buffer.clear();
 }
+
 bool isNumber(const std::string &str) {
     int numDecimal = 0;
     for(int i = 0; i < str.size(); i++) {
@@ -47,15 +49,15 @@ bool isNumber(const std::string &str) {
     }
     return true;
 }
-bool isSpecSymb(const char &c) {
-    return Lexer::specialSymbols.count(c);
+
+bool isSymbol(const char &c) {
+    return Lexer::symbols.count(c);
 }
-bool isOperatorTk(const char &c) {
-    return Lexer::operatorTokens.count(c);
-}
+
 bool isKeyword(const std::string &str) {
     return Lexer::keywords.count(str);
 }
+
 
 void Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
 
@@ -92,8 +94,7 @@ void Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
             number = true;
         }
         else if(number && (isspace(currChar) 
-            || isOperatorTk(currChar)
-            || isSpecSymb(currChar))) {
+            || isSymbol(currChar))) {
             number = false;
             tokenBufferPushBack(charBuffer, tokens, line);
         }
@@ -105,9 +106,7 @@ void Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
 
         // conditions for pushing token to tokens vector
         if(!number && !string && !comment && 
-            (isSpecSymb(nextChar) || isSpecSymb(currChar)
-            || isOperatorTk(nextChar) 
-            || isOperatorTk(currChar) 
+            (isSymbol(nextChar) || isSymbol(currChar)
             || isspace(nextChar))) {
             // certified bruh moment
             // we dont strip if the buffer is the last part of a string segment
@@ -130,11 +129,8 @@ void Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
         if(isKeyword(tk.data)) {
             tk.type = TokenType::Keyword;
         }
-        else if(tk.data.size() == 1 && isOperatorTk(tk.data[0])) {
-            tk.type = TokenType::OperatorToken;
-        }
-        else if(tk.data.size() == 1 && isSpecSymb(tk.data[0])) {
-            tk.type = TokenType::SpecialSymbol;
+        else if(tk.data.size() == 1 && isSymbol(tk.data[0])) {
+            tk.type = TokenType::Symbol;
             if(tk.data == "{" && openStringSeg) {
                 openFormatSpecifier = true;
             }
@@ -160,8 +156,7 @@ void Lexer::Lex(const std::string &fileData, std::vector<Token> &tokens) {
             else if(openStringSeg && !openFormatSpecifier) {
                 tk.type = TokenType::StringSegment;
             }
-            else if(!isdigit(tk.data[0]) && !isOperatorTk(tk.data[0]) 
-                    && !isSpecSymb(tk.data[0])){
+            else if(!isdigit(tk.data[0]) && !isSymbol(tk.data[0])){
                 tk.type = TokenType::Identifier;
             }
             // else it stays as invalid

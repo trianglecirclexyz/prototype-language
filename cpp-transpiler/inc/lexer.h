@@ -11,11 +11,10 @@
 namespace Lexer {
     const std::unordered_set<std::string> keywords = 
         {"string", "int", "float", "bool", "true",
-        "false", "fn",};
-    const std::unordered_set<char> operatorTokens = 
-        {'=', '+', '-', '*', '/', '^', '>', '<',};
-    const std::unordered_set<char> specialSymbols = 
-        {'(', ')', '{', '}', ';', '!', '.', '$',
+        "false", "fn", "for", "in", "list"};
+    const std::unordered_set<char> symbols = 
+        {'=', '+', '-', '*', '/', '^', '>', '<', '%',
+         '(', ')', '{', '}', ';', '!', '.', '$',
          ',', ':', };
 
     // read file into fileData

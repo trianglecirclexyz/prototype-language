@@ -6,12 +6,11 @@
 enum TokenType {
     Keyword, // 0
     Identifier, // 1
-    SpecialSymbol, // 2
-    OperatorToken, // 3
-    Value, // 4
-    String, // 5
-    StringSegment, // 6
-    Invalid, // 7
+    Symbol, // 2
+    Value, // 3
+    String, // 4
+    StringSegment, // 5
+    Invalid, // 6
 };
 
 struct Token {
