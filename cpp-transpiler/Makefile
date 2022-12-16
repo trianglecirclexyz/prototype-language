@@ -17,9 +17,8 @@ run: $(BIN)/string_utils_test $(BIN)/lexer_test $(BIN)/transpiler
 
 
 # Binaries
-$(BIN)/transpiler: $(OBJ)/transpiler.o $(OBJ)/lexer.o $(OBJ)/string_utils.o
-	$(CXX) $(LDFLAGS) $(OBJ)/transpiler.o $(OBJ)/lexer.o $(OBJ)/string_utils.o -o $(BIN)/transpiler
-
+$(BIN)/transpiler: $(OBJ)/transpiler.o $(OBJ)/lexer.o $(OBJ)/parser.o $(OBJ)/string_utils.o
+	$(CXX) $(LDFLAGS) $(OBJ)/transpiler.o $(OBJ)/lexer.o $(OBJ)/parser.o $(OBJ)/string_utils.o -o $(BIN)/transpiler
 
 # Test Binaries
 $(BIN)/string_utils_test: $(OBJ)/string_utils_test.o $(OBJ)/string_utils.o
@@ -29,11 +28,14 @@ $(BIN)/lexer_test: $(OBJ)/lexer_test.o $(OBJ)/lexer.o $(OBJ)/string_utils.o
 	$(CXX) $(OBJ)/lexer_test.o $(OBJ)/lexer.o $(OBJ)/string_utils.o -o $(BIN)/lexer_test $(LDFLAGS)
 
 # Objects
-$(OBJ)/transpiler.o: $(SRC)/transpiler.cpp $(INC)/lexer.h
+$(OBJ)/transpiler.o: $(SRC)/transpiler.cpp $(INC)/lexer.h $(INC)/parser.h
 	$(CXX) $(CXXFLAGS) -c $(SRC)/transpiler.cpp -o $(OBJ)/transpiler.o
 
 $(OBJ)/lexer.o: $(SRC)/lexer.cpp $(INC)/lexer.h $(INC)/string_utils.h
 	$(CXX) $(CXXFLAGS) -c $(SRC)/lexer.cpp -o $(OBJ)/lexer.o
+
+$(OBJ)/parser.o: $(SRC)/parser.cpp $(INC)/parser.h
+	$(CXX) $(CXXFLAGS) -c $(SRC)/parser.cpp -o $(OBJ)/parser.o
 
 $(OBJ)/string_utils.o: $(SRC)/string_utils.cpp $(INC)/string_utils.h
 	$(CXX) $(CXXFLAGS) -c $(SRC)/string_utils.cpp -o $(OBJ)/string_utils.o
